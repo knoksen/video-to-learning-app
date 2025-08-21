@@ -1,7 +1,7 @@
 {
   "name": "video-to-learning-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -9,7 +9,7 @@
     "preview": "vite preview --host"
   },
   "dependencies": {
-    "@google/genai": "^0.1.0",
+    "@google/genai": "^1.13.0",
     "@monaco-editor/react": "^4.6.1",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",

@@ -21,6 +21,7 @@ import {
   SPEC_FROM_VIDEO_PROMPT,
 } from '@/lib/prompts';
 import {generateText} from '@/lib/textGeneration';
+import type {ContentBasis} from '@/lib/types';
 
 const SkeletonLoader = ({message}: {message: string}) => (
   <div className="skeleton-loader">
@@ -66,7 +67,7 @@ const ErrorState = ({
   </div>
 );
 interface ContentContainerProps {
-  contentBasis: string;
+  contentBasis: ContentBasis;
   preSeededSpec?: string;
   preSeededCode?: string;
   onLoadingStateChange?: (isLoading: boolean) => void;
@@ -103,11 +104,13 @@ export default forwardRef(function ContentContainer(
   }));
 
   // Helper function to generate content spec from video
-  const generateSpecFromVideo = async (videoUrl: string): Promise<string> => {
+  const generateSpecFromVideo = async (
+    videoContent: ContentBasis,
+  ): Promise<string> => {
     const specResponse = await generateText({
       modelName: 'gemini-2.5-flash',
       prompt: SPEC_FROM_VIDEO_PROMPT,
-      videoUrl: videoUrl,
+      video: videoContent,
     });
 
     let spec = parseJSON(specResponse).spec;
@@ -263,8 +266,7 @@ export default forwardRef(function ContentContainer(
       title="Error Generating Content"
       message={error || 'Something went wrong.'}
       details={
-        !contentBasis.startsWith('http://') &&
-        !contentBasis.startsWith('https://')
+        'url' in contentBasis && !contentBasis.url.startsWith('http')
           ? 'URL must begin with http:// or https://'
           : undefined
       }

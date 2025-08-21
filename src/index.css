@@ -176,8 +176,13 @@ button:disabled {
 
 .button-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
+.button-group-secondary {
+  display: contents;
+}
+
 .share-button {
   padding: 0.6rem 1rem;
 }
@@ -656,6 +661,44 @@ input::placeholder {
   }
 }
 
+/* == CAMERA MODAL == */
+.camera-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.camera-modal-content {
+  background: var(--color-background-soft);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 640px;
+  text-align: center;
+}
+
+.camera-modal-content video {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  background: #000;
+}
+
+.camera-modal-controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 /* == RESPONSIVE LAYOUT == */
 @media (max-width: 1024px) {
   .main-content {
@@ -681,13 +724,19 @@ input::placeholder {
   }
   .button-container {
     flex-direction: column;
+    align-items: flex-start;
   }
-  .share-button span {
+  .button-group-secondary {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .button-group-secondary .button-text {
     display: none; /* Hide text on small screens */
   }
+  .button-group-secondary .button-secondary {
+    padding: 0.6rem;
+  }
   .share-button {
-    padding: 0.6rem; /* Revert to square padding */
-    width: fit-content;
-    align-self: flex-start;
+    padding: 0.6rem;
   }
 }

@@ -1,5 +1,8 @@
 {
   "name": "Video to Learning App",
-  "description": "Instantly turn YouTube videos into fun learning apps using AI. Explore concepts visually and learn actively!",
-  "requestFramePermissions": []
+  "description": "Instantly turn any video (from YouTube, local upload, or camera recording) into a fun, interactive learning app using AI.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
 }

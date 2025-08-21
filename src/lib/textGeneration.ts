@@ -10,11 +10,12 @@ import {
   GoogleGenAI,
   Part,
 } from '@google/genai';
+import {ContentBasis} from './types';
 
 interface GenerateTextOptions {
   modelName: string;
   prompt: string;
-  videoUrl?: string;
+  video?: ContentBasis;
   temperature?: number;
 }
 
@@ -27,7 +28,7 @@ interface GenerateTextOptions {
 export async function generateText(
   options: GenerateTextOptions,
 ): Promise<string> {
-  const {modelName, prompt, videoUrl, temperature = 0.75} = options;
+  const {modelName, prompt, video, temperature = 0.75} = options;
 
   if (!process.env.API_KEY) {
     throw new Error(
@@ -37,15 +38,28 @@ export async function generateText(
 
   const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
 
-  const parts: Part[] = [{text: prompt}];
+  let contents: string | {parts: Part[]};
 
-  if (videoUrl) {
-    parts.push({
-      fileData: {
-        mimeType: 'video/mp4',
-        fileUri: videoUrl,
-      },
-    });
+  if (video) {
+    const parts: Part[] = [{text: prompt}];
+    if ('url' in video) {
+      parts.push({
+        fileData: {
+          mimeType: 'video/mp4',
+          fileUri: video.url,
+        },
+      });
+    } else if ('data' in video) {
+      parts.push({
+        inlineData: {
+          data: video.data,
+          mimeType: video.mimeType,
+        },
+      });
+    }
+    contents = {parts};
+  } else {
+    contents = prompt;
   }
 
   const generationConfig: GenerateContentConfig = {
@@ -55,7 +69,7 @@ export async function generateText(
   try {
     const response = await ai.models.generateContent({
       model: modelName,
-      contents: parts,
+      contents,
       config: generationConfig,
     });
 
@@ -87,6 +101,13 @@ export async function generateText(
           `Content generation failed: Stopped due to ${firstCandidate.finishReason}.`,
         );
       }
+    }
+
+    if (!response.text) {
+      console.warn('Gemini response was empty. Full response:', response);
+      throw new Error(
+        'Content generation failed: Received an empty response from the model.',
+      );
     }
 
     return response.text;

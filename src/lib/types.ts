@@ -4,6 +4,8 @@
 */
 /* tslint:disable */
 
+export type ContentBasis = {url: string} | {data: string; mimeType: string};
+
 export interface Example {
   title: string;
   url: string;
