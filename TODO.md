@@ -1,0 +1,8 @@
+- [ ] Inspect `.gitignore` and add required repository hygiene rules.
+- [ ] Update `web-extractor-pro/TODO.md` with M1 runtime trust and verification evidence.
+- [ ] Review backend endpoints and document extended B endpoint verification summary.
+- [ ] Polish `web-extractor-pro/README.md` with quick links, MVP status, API list, roadmap, legal/security notes.
+- [ ] Add quicklaunch scripts under `scripts/` (PowerShell/BAT).
+- [ ] Add future-work docs: `docs/PWA_PLAN.md` and `docs/WINDOWS_INSTALLER_PLAN.md`.
+- [ ] Stage only M1/doc-safe files and verify staged diff excludes generated/unrelated files.
+- [ ] Commit and push hygiene/documentation changes.
